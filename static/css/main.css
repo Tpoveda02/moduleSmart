@@ -1,0 +1,24 @@
+
+.form-control-file{
+    position: relative;
+    width: 4.5vh !important;
+    width: 3vw !important;
+}
+.form-control-file input{
+    position: absolute;
+    text-align: center;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+.button-upload{
+    margin-left:10px;
+    margin-right:10px;
+}
+footer{
+    background:#3E4B50;
+}
