@@ -1,5 +1,7 @@
 
 #Importación de librerías para visualizar el arbol
+import os.path
+
 import pandas as pd #Analisís de datos
 from sklearn.model_selection import train_test_split #Crear archivos de prueba y entrenamiento
 from sklearn import tree  #Construir arbol de desición - grafico.
@@ -12,7 +14,8 @@ from flask_wtf import FlaskForm
 from flask import jsonify
 from wtforms import FileField, SubmitField
 from wtforms.validators import InputRequired
-
+from werkzeug.utils import secure_filename
+import os
 #Conexión con la BD
 from flask_mysqldb import MySQL
 
@@ -30,23 +33,25 @@ mysql = MySQL(app)
 #Atributos botón - cargar arvhivo
 class Proccess(FlaskForm):
     file = FileField("File", validators=[InputRequired()])
-    submit = SubmitField("Cargar documento")
+    submit = SubmitField()
 
 #Obtener el archivo cargado desde la web
 @app.route('/', methods=['GET',"POST"])
+@app.route('/home', methods=['GET',"POST"])
 def home():
     form = Proccess()
+    succes_file = ""
     if form.validate_on_submit():
         file = form.file.data # First grab the file
         #file.to_cvs()
-        #business = pd.read_csv(file.get)
-        return "<h1>Archivo procesado.<h1>"
+        file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'], secure_filename(file.name)))
+        succes_file = "Archivo cargado"
     cursor = mysql.connection.cursor()
     cursor.execute("SELECT * FROM TIPO_ESTRAS")
     tipo_estra = cursor.fetchall()
     cursor.execute("SELECT * FROM TIPO_HERRAS")
     tipo_herra = cursor.fetchall()
-    return render_template('index.html', tipo_estras=tipo_estra, tipo_herras=tipo_herra)
+    return render_template('index.html', form=form, tipo_estras=tipo_estra, tipo_herras=tipo_herra, message=succes_file)
 
 @app.route("/estra/<string:id>", methods=["GET"])
 def getEstras(id):
@@ -66,7 +71,7 @@ def getUser(password):
 def fileTree(estra):
     data_pre = []
     # Leer el archivo y transformarlo en una matriz
-    data = pd.read_csv('data_tree.csv', engine='python', index_col=0)
+    data = pd.read_csv('static/files/file', engine='python', index_col=0)
     # Agrupar los datos por herramienta promediando los datos
     data_tree = data.groupby(['HERRAMIENTA']).mean().drop(['#ESTUDIANTE', '#MUJERES', '#HOMBRE'], axis=1)
     # Determinar las herramientas viables y no viables - TRUE FALSE

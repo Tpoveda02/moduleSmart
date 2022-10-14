@@ -119,28 +119,37 @@
                 </div>
                     <!-- Cambiar arvhivo -->
                     <div class="d-flex row flex-row-reverse">
-                        <div class="button-upload">
-                            <button hidden type="button" class="btn btn-success px-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-file-earmark-arrow-up-fill" viewBox="0 0 16 16">
-                                    <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM6.354 9.854a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 8.707V12.5a.5.5 0 0 1-1 0V8.707L6.354 9.854z"/>
-                                </svg>
-                            </button>
-                        </div>
-                        <!-- Cargar arvhivo -->
-                        <div class="from-file">
-                            <div hidden class="form-control-file btn btn-primary active" id="upload_file">
-                                <input  type="file" name="file-data" accept=".cvs">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16">
-                                    <path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/>
-                                </svg>
+                        <form method="POST" enctype="multipart/form-data" class="row">
+                            {{form.hidden_tag()}}
+                            <!-- Cargar arvhivo -->
+                            <div class="from-file col-6">
+                                <div hidden class="form-control-file btn btn-primary active" id="upload_file">
+                                    <div class="input" id="file_data">
+                                        {{form.file()}}
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16">
+                                            <path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/>
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                            <div class="button-upload col-6">
+                                <div hidden class="btn btn-success px-3 submit-file" id="save_file">
+                                    {{form.submit()}}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-file-earmark-arrow-up-fill" viewBox="0 0 16 16">
+                                        <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM6.354 9.854a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 8.707V12.5a.5.5 0 0 1-1 0V8.707L6.354 9.854z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </form>
+
                         <!-- Validar usuario -->
                         <div hidden class="input-group mb-3 col-5" id="valid_user">
-                            <input type="password" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
-                            <button class="btn btn-primary active" type="button" id="button-addon1">Ingresar</button>
+                            <input id="password" type="password" class="form-control" placeholder="Ingrese contraseña de administrador" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                            <button class="btn btn-primary active" type="button" onclick="validUser()" id="button-addon1">Ingresar</button>
+                            <small hidden class="text-success col-12" id="messageValid"></small>
                         </div>
                     </div>
+                <div class="d-flex justify-content-end"><h4 class="text-success" id="message">{{message}}</h4></div>
                 <!-- Selectores para el filtrado tipo - estrategia  -->
                 <div class="row" style="justify-content:center">
                     <select style="margin-right:20px" id="tipo_estra" placeholder="Tipo de estrategia" class="form-control form-gape col-3">
